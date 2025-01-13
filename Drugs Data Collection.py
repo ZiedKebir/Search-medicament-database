@@ -11,6 +11,7 @@ os.chdir('C:/Users/ziedk/OneDrive/Bureau/Data Science Projects/Medicine Search')
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+import time 
 
 driver = webdriver.Chrome()
 
@@ -34,19 +35,26 @@ def get_links_one_page():
 
 def get_links_all_pages():
     """
-    Enter a letter to get a new page and then extract the links of all the drugs starting with that letter
+    Parses through all the pages for each letter and extract all the links in each page
 
     return -> dictionary in the format {'A':['link1','link2'...],'B':...}
     -------
     """
+    links_per_page = dict()
     
-    
+    letter_page_elements = driver.find_elements(By.CLASS_NAME,'lienalphabet')
+    character = [chr(i) for i in range(ord('A'), ord('B') + 1)]
+    for i in range(1,3):
+
+        driver.find_elements(By.CLASS_NAME,'lienalphabet')[i].click()
+        links_current_page = get_links_one_page()
+        time.sleep(3)
+        print(links_current_page)
+        links_per_page[character[i]] = links_current_page
+    return links_per_page
+        
+          
+        
+all_drugs_links = get_links_all_pages()
 
 
-character
-
-x = driver.find_element(By.NAME,'txtCaracteres')
-x.send_keys('B')
-x.clear()
-y = driver.find_element(By.NAME,'btnMedic')
-y.click()
